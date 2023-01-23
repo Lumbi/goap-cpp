@@ -1,0 +1,11 @@
+cmake_minimum_required(VERSION 3.25)
+
+project(goap)
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
+file(GLOB_RECURSE SOURCE_FILES ${CMAKE_SOURCE_DIR}/*.cpp)
+file(GLOB_RECURSE HEADER_FILES ${CMAKE_SOURCE_DIR}/*.hpp)
+
+add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES})

@@ -1,16 +1,13 @@
 #include "Action.h"
 
 #include <algorithm>
-#include "Condition.h"
 
 Action::Action(const ConditionSet& preconditions, const ConditionSet& postconditions)
     : _preconditions { preconditions },
       _postconditions { postconditions }
 {}
 
-Action::~Action() {}
-
-bool Action::is_successor_of(const Action& other)
+bool Action::is_successor_of(const Action& other) const
 {
     for (auto &&precondition : _preconditions)
     {

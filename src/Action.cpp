@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-Action::Action(const ConditionSet& preconditions, const ConditionSet& postconditions)
+Action::Action(const Conditions& preconditions, const Conditions& postconditions)
     : _preconditions { preconditions },
       _postconditions { postconditions }
 {}

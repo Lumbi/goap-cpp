@@ -1,4 +1,4 @@
-#include <functional>
+#include <vector>
 
 #ifndef CONDITION_H
 #define CONDITION_H
@@ -24,5 +24,7 @@ class Condition
         ID _identifier;
         bool _is_true;
 };
+
+using Conditions = std::vector<const Condition>;
 
 #endif

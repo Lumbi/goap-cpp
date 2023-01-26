@@ -2,6 +2,6 @@
 
 set -eo pipefail
 
-./build.sh
+./clean.sh
 
-./build/src/goap
+./build.sh

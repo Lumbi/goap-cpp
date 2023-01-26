@@ -4,4 +4,4 @@ set -eo pipefail
 
 ./build.sh
 
-./build/src/goap
+ctest --test-dir build --output-on-failure

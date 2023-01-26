@@ -30,6 +30,8 @@ ActionGraph::ActionGraph(const std::vector<const Action>& actions)
     {
         for (auto other = _nodes.cbegin(); other != _nodes.cend(); other++)
         {
+            if (node == *other) { continue; } // Skip if itself
+
             if ((*other)->action.is_successor_of(node->action)) {
                 node->add_successor(*other);
             }

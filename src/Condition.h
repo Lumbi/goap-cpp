@@ -27,4 +27,6 @@ class Condition
 
 using Conditions = std::vector<const Condition>;
 
+bool all_satisfied_by(const Conditions& preconditions, const Conditions& postconditions);
+
 #endif

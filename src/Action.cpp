@@ -9,11 +9,10 @@ Action::Action(const Conditions& preconditions, const Conditions& postconditions
 
 bool Action::is_successor_of(const Action& other) const
 {
-    for (auto &&precondition : _preconditions)
-    {
-        auto found = std::find(other._postconditions.cbegin(), other._postconditions.cend(), precondition);
-        if (found == other._postconditions.cend()) { return false; }
-        if (precondition.is_satisfied_by(*found) == false) { return false; }
-    }
-    return true;
+    return all_satisfied_by(_preconditions, other._postconditions);
+}
+
+const Conditions& Action::get_postconditions() const
+{
+    return _postconditions;
 }

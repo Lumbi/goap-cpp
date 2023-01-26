@@ -2,7 +2,7 @@
 
 #include "Assert.h"
 
-void test__is_satisfied_by__identity()
+void test__is_satisfied_by__itself()
 {
     Condition a(1, true);
     ASSERT_EQUAL(a.is_satisfied_by(a), true, "A condition should satisfy itself");
@@ -33,7 +33,7 @@ void test__is_satisfied_by__unrelated()
 
 int Condition_test(int, char**)
 {
-    test__is_satisfied_by__identity();
+    test__is_satisfied_by__itself();
     test__is_satisfied_by__true();
     test__is_satisfied_by__false();
     test__is_satisfied_by__unrelated();

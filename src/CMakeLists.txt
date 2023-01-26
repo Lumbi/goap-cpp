@@ -1,11 +1,20 @@
 cmake_minimum_required(VERSION 3.25)
 
-project(goap)
-
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-file(GLOB_RECURSE SOURCE_FILES ${CMAKE_SOURCE_DIR}/*.cpp)
-file(GLOB_RECURSE HEADER_FILES ${CMAKE_SOURCE_DIR}/*.hpp)
+add_library (
+    ${PROJECT_LIB_NAME}
+    Condition.cpp
+    Condition.h
+    Action.cpp
+    Action.h
+    Goal.cpp
+    Goal.h
+    ActionGraph.cpp
+    ActionGraph.h
+)
 
-add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES})
+add_executable (${PROJECT_NAME} Main.cpp)
+
+target_link_libraries (${PROJECT_NAME} ${PROJECT_LIB_NAME})

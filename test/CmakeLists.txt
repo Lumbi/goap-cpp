@@ -1,0 +1,25 @@
+cmake_minimum_required(VERSION 3.25)
+
+set(PROJECT_TEST_NAME ${PROJECT_NAME}_Test)
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
+set(TEST_DRIVER_SRC ${PROJECT_TEST_NAME}.cpp)
+
+create_test_sourcelist (
+    TEST_SRC_LIST
+    ${TEST_DRIVER_SRC}
+    Condition_test.cpp
+)
+
+add_executable (${PROJECT_TEST_NAME} ${TEST_SRC_LIST} Assert.h)
+target_link_libraries(${PROJECT_TEST_NAME} ${PROJECT_LIB_NAME})
+
+set (TESTS_SRC_TO_RUN ${TEST_SRC_LIST})
+remove (TESTS_SRC_TO_RUN ${TEST_DRIVER_SRC})
+
+foreach (TEST_SRC ${TESTS_SRC_TO_RUN})
+  get_filename_component (TEST_NAME ${TEST_SRC} NAME_WE)
+  add_test (NAME ${TEST_NAME} COMMAND ${PROJECT_TEST_NAME} ${TEST_NAME})
+endforeach ()

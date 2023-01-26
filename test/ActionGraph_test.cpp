@@ -1,6 +1,5 @@
 #include "../src/ActionGraph.h"
 
-#include <algorithm>
 #include "Assert.h"
 
 void test__empty_graph__has_no_nodes()

@@ -67,28 +67,32 @@ void test__find_path__no_path()
 
 void test__find_path__single_path()
 {
-    Action first({}, { Condition(1, true) });
-    Action second({ Condition(1, true) }, { Condition(1, true) });
-    Action third({ Condition(1, true) }, { Condition(3, false) });
+    Action first("first", {}, { Condition(1, true) });
+    Action second("second", { Condition(1, true) }, { Condition(1, true) });
+    Action third("third", { Condition(1, true) }, { Condition(3, false) });
     ActionGraph graph({ first, second, third });
     Goal goal({ Condition(3, false) });
     auto path = graph.find_path({}, goal);
 
     ASSERT_NOT_NULL(path, "A path should be found");
     ASSERT_EQUAL(path->get_actions().size(), 3, "The path should have 3 actions");
+    ASSERT_EQUAL(path->get_actions().at(0).get_name(), "first", "The 1st action should be correct");
+    ASSERT_EQUAL(path->get_actions().at(1).get_name(), "second", "The 2nd action should be correct");
+    ASSERT_EQUAL(path->get_actions().at(2).get_name(), "third", "The 3rd action should be correct");
 }
 
 void test__find_path__multiple_paths()
 {
-    Action first({}, { Condition(1, true), Condition(3, false) });
-    Action second({ Condition(1, true) }, { Condition(1, true) });
-    Action third({ Condition(1, true) }, { Condition(3, false) });
+    Action first("first", {}, { Condition(1, true), Condition(3, false) });
+    Action second("second", { Condition(1, true) }, { Condition(1, true) });
+    Action third("third", { Condition(1, true) }, { Condition(3, false) });
     ActionGraph graph({ first, second, third });
     Goal goal({ Condition(3, false) });
     auto path = graph.find_path({}, goal);
 
     ASSERT_NOT_NULL(path, "The shortest path should be found");
-    ASSERT_EQUAL(path->get_actions().size(), 2, "The path should have 2 actions");
+    ASSERT_EQUAL(path->get_actions().size(), 1, "The path should have 1 action");
+    ASSERT_EQUAL(path->get_actions().at(0).get_name(), "first", "The 1st action should be correct");
 }
 
 int ActionGraph_test(int, char**)

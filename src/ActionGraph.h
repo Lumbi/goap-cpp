@@ -1,9 +1,13 @@
 #include <iostream>
 #include <vector>
+
 #include "Action.h"
 
 #ifndef ACTION_GRAPH_H
 #define ACTION_GRAPH_H
+
+class Goal;
+class ActionPath;
 
 class ActionGraph
 {
@@ -32,6 +36,8 @@ class ActionGraph
         ~ActionGraph();
 
         const std::vector<Node*>& get_nodes() const;
+
+        const ActionPath* find_path(const Conditions&, const Goal&) const;
 
     private:
         std::vector<Node*> _nodes;

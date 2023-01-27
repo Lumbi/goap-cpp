@@ -1,5 +1,8 @@
 #include "ActionGraph.h"
 
+#include "Goal.h"
+#include "ActionPath.h"
+
 ActionGraph::Node::Node(const Action& action)
     : action { action },
       _successors { }
@@ -50,6 +53,12 @@ ActionGraph::~ActionGraph()
 const std::vector<ActionGraph::Node*>& ActionGraph::get_nodes() const
 {
     return _nodes;
+}
+
+const ActionPath* ActionGraph::find_path(const Conditions&, const Goal&) const
+{
+    // TODO: Implement A*
+    return nullptr;
 }
 
 std::ostream& operator<< (std::ostream& os, const ActionGraph::Node& node)

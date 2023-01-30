@@ -31,3 +31,8 @@ const Conditions& Action::get_postconditions() const
 {
     return _postconditions;
 }
+
+bool Action::operator==(const Action& other) const
+{
+    return this->_name == other._name;
+}

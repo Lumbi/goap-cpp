@@ -19,6 +19,8 @@ class Action {
 
         const Conditions& get_postconditions() const;
 
+        bool operator==(const Action& other) const;
+
     private:
         const Name _name;
         const Conditions _preconditions;

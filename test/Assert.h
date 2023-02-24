@@ -2,6 +2,9 @@
 #include <string>
 #include <functional>
 
+#ifndef ASSERT_H
+#define ASSERT_H
+
 inline void ASSERT(std::function<bool (void)> predicate, const std::string& message)
 {
     if (predicate() == false) {
@@ -36,3 +39,5 @@ void ASSERT_NOT_NULL(const T* t, const std::string& message)
         message + " : expected value to not be null"
     );
 }
+
+#endif

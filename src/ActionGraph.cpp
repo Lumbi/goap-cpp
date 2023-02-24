@@ -8,8 +8,6 @@ ActionGraph::Node::Node(const Action& action)
       _successors { }
 {}
 
-ActionGraph::Node::~Node() {}
-
 const std::vector<const ActionGraph::Node*> ActionGraph::Node::get_successors() const
 {
     return _successors;

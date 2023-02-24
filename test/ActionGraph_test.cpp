@@ -4,7 +4,6 @@
 #include "../src/Action.h"
 #include "../src/Goal.h"
 #include "../src/ActionGraph.h"
-#include "../src/ActionPath.h"
 
 void test__empty_graph__has_no_nodes()
 {

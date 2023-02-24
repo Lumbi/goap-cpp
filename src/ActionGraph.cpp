@@ -1,7 +1,6 @@
 #include "ActionGraph.h"
 
 #include "Goal.h"
-#include "ActionPath.h"
 
 ActionGraph::Node::Node(const Action& action)
     : action { action },
@@ -55,7 +54,7 @@ const std::vector<ActionGraph::Node*>& ActionGraph::get_nodes() const
     return _nodes;
 }
 
-const ActionPath* ActionGraph::find_path(const Conditions&, const Goal&) const
+std::vector<Action> ActionGraph::find_path(const Conditions& start_conditions, const Goal& goal) const
 {
     // TODO: Implement A*
     return nullptr;

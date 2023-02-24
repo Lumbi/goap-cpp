@@ -7,7 +7,6 @@
 #define ACTION_GRAPH_H
 
 class Goal;
-class ActionPath;
 
 class ActionGraph
 {
@@ -37,7 +36,7 @@ class ActionGraph
 
         const std::vector<Node*>& get_nodes() const;
 
-        const ActionPath* find_path(const Conditions&, const Goal&) const;
+        std::vector<Action> find_path(const Conditions& start_conditions, const class Goal& goal) const;
 
     private:
         std::vector<Node*> _nodes;

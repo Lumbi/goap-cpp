@@ -30,7 +30,12 @@ Action::ID Action::get_id() const
 
 bool Action::is_successor_of(const Action& other) const
 {
-    return all_satisfied_by(_preconditions, other._postconditions);
+    return is_reachable_from(other._postconditions);
+}
+
+bool Action::is_reachable_from(const Conditions& conditions) const
+{
+    return all_satisfied_by(_preconditions, conditions);
 }
 
 const Conditions& Action::get_postconditions() const

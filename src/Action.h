@@ -21,6 +21,8 @@ class Action {
 
         bool is_successor_of(const Action&) const;
 
+        bool is_reachable_from(const Conditions&) const;
+
         const Conditions& get_postconditions() const;
 
         bool operator==(const Action& other) const;

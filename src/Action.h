@@ -26,10 +26,10 @@ class Action {
         bool operator==(const Action& other) const;
 
     private:
-        const Name _name;
-        const ID _id;
-        const Conditions _preconditions;
-        const Conditions _postconditions;
+        Name _name;
+        ID _id;
+        Conditions _preconditions;
+        Conditions _postconditions;
 };
 
 #endif

@@ -6,8 +6,6 @@
 #ifndef ACTION_GRAPH_H
 #define ACTION_GRAPH_H
 
-class Goal;
-
 class ActionGraph
 {
     public:

@@ -13,6 +13,7 @@ Action::Action(const Conditions& preconditions, const Conditions& postconditions
 
 Action::Action(const Name& name, const Conditions& preconditions, const Conditions& postconditions)
     : _name { name },
+      _id { std::hash<std::string>{}(name) },
       _preconditions { preconditions },
       _postconditions { postconditions }
 {}
@@ -20,6 +21,11 @@ Action::Action(const Name& name, const Conditions& preconditions, const Conditio
 const Action::Name& Action::get_name() const
 {
     return _name;
+}
+
+Action::ID Action::get_id() const
+{
+    return _id;
 }
 
 bool Action::is_successor_of(const Action& other) const

@@ -6,7 +6,7 @@
 class Goal
 {
     public:
-        Goal(const Conditions&);
+        explicit Goal(const Conditions&);
 
         bool is_reachable_by(const class Action&) const;
 

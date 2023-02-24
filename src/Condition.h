@@ -20,7 +20,7 @@ class Condition
         bool _is_true;
 };
 
-using Conditions = std::vector<const Condition>;
+using Conditions = std::vector<Condition>;
 
 bool all_satisfied_by(const Conditions& preconditions, const Conditions& postconditions);
 

@@ -26,6 +26,8 @@ class ActionGraph
 
     public:
         ActionGraph(const ActionGraph&) = delete;
+        ActionGraph& operator=(const ActionGraph&) = delete;
+
         ActionGraph(const std::vector<const Action>& actions);
 
         ~ActionGraph();

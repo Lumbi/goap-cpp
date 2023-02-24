@@ -1,6 +1,7 @@
 #include "ActionGraph.h"
 
 #include "Goal.h"
+#include "PathFinding.h"
 
 ActionGraph::Node::Node(const Action& action)
     : action { action },
@@ -56,8 +57,32 @@ const std::vector<ActionGraph::Node*>& ActionGraph::get_nodes() const
 
 std::vector<Action> ActionGraph::find_path(const Conditions& start_conditions, const Goal& goal) const
 {
-    // TODO: Implement A*
-    return nullptr;
+    std::vector<const Node*> shortest_path;
+
+    // Consider each node as a possible starting point
+    for (auto&& node : _nodes) {
+        if (node->action.is_reachable_from(start_conditions)) {
+            std::vector<const Node*> path = find_shortest_path<const Node, Action::ID>(
+                *node,
+                [] (const Node& node) { return node.action.get_id(); },
+                [] (const Node& node) { return node.get_successors(); },
+                [&] (const Node& node) { return goal.is_reachable_by(node.action); }
+            );
+            if (shortest_path.empty()) {
+                shortest_path = path;
+            } else if (path.size() < shortest_path.size()) {
+                shortest_path = path;
+            }
+        }
+    }
+
+    // Map nodes to actions
+    std::vector<Action> actions;
+    for (auto&& node : shortest_path) {
+        actions.insert(actions.begin(), node->action);
+    }
+
+    return actions;
 }
 
 std::ostream& operator<< (std::ostream& os, const ActionGraph::Node& node)

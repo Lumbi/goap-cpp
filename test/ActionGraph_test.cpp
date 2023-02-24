@@ -49,7 +49,7 @@ void test__find_path__emtpy_graph()
     ActionGraph graph({});
     Goal goal({});
     auto path = graph.find_path({}, goal);
-    ASSERT_NULL(path, "There should be no path to goal on an empty graph");
+    ASSERT_EQUAL(path.empty(), true, "There should be no path to goal on an empty graph");
 }
 
 void test__find_path__no_path()
@@ -61,23 +61,22 @@ void test__find_path__no_path()
     Goal goal({ Condition(777, true) });
     auto path = graph.find_path({}, goal);
 
-    ASSERT_NULL(path, "There should be no path to goal with condition that cannot be reached");
+    ASSERT_EQUAL(path.empty(), true, "There should be no path to goal with condition that cannot be reached");
 }
 
 void test__find_path__single_path()
 {
     Action first("first", {}, { Condition(1, true) });
-    Action second("second", { Condition(1, true) }, { Condition(1, true) });
-    Action third("third", { Condition(1, true) }, { Condition(3, false) });
+    Action second("second", { Condition(1, true) }, { Condition(2, true) });
+    Action third("third", { Condition(2, true) }, { Condition(3, false) });
     ActionGraph graph({ first, second, third });
     Goal goal({ Condition(3, false) });
     auto path = graph.find_path({}, goal);
 
-    ASSERT_NOT_NULL(path, "A path should be found");
-    ASSERT_EQUAL(path->get_actions().size(), 3, "The path should have 3 actions");
-    ASSERT_EQUAL(path->get_actions().at(0).get_name(), "first", "The 1st action should be correct");
-    ASSERT_EQUAL(path->get_actions().at(1).get_name(), "second", "The 2nd action should be correct");
-    ASSERT_EQUAL(path->get_actions().at(2).get_name(), "third", "The 3rd action should be correct");
+    ASSERT_EQUAL(path.size(), 3, "The path should have 3 actions");
+    ASSERT_EQUAL(path.at(0).get_name(), "first", "The 1st action should be correct");
+    ASSERT_EQUAL(path.at(1).get_name(), "second", "The 2nd action should be correct");
+    ASSERT_EQUAL(path.at(2).get_name(), "third", "The 3rd action should be correct");
 }
 
 void test__find_path__multiple_paths()
@@ -89,9 +88,8 @@ void test__find_path__multiple_paths()
     Goal goal({ Condition(3, false) });
     auto path = graph.find_path({}, goal);
 
-    ASSERT_NOT_NULL(path, "The shortest path should be found");
-    ASSERT_EQUAL(path->get_actions().size(), 1, "The path should have 1 action");
-    ASSERT_EQUAL(path->get_actions().at(0).get_name(), "first", "The 1st action should be correct");
+    ASSERT_EQUAL(path.size(), 1, "The path should have 1 action");
+    ASSERT_EQUAL(path.at(0).get_name(), "first", "The 1st action should be correct");
 }
 
 int ActionGraph_test(int, char**)

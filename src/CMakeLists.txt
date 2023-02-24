@@ -11,6 +11,7 @@ add_library (
     Action.h
     Goal.cpp
     Goal.h
+    PathFinding.h
     ActionGraph.cpp
     ActionGraph.h
 )

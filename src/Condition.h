@@ -9,12 +9,7 @@ class Condition
         using ID = int;
 
     public:
-        Condition() = delete;
         Condition(ID identifier, bool is_true);
-        Condition(const Condition&);
-        Condition(Condition&&) = delete;
-
-        ~Condition();
 
         bool is_satisfied_by(const Condition&) const;
 

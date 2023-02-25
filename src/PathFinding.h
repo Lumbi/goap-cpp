@@ -39,7 +39,7 @@ std::vector<Node*> find_shortest_path(
         auto it_nearest = std::min_element(
             to_visit.cbegin(),
             to_visit.cend(),
-            [&] (auto&& node_a, auto&& node_b) { return get_distance(*node_a) < get_distance(*node_a); }
+            [&] (auto&& node_a, auto&& node_b) { return get_distance(*node_a) < get_distance(*node_b); }
         );
 
         // Pop it

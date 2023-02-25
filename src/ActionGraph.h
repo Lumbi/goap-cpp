@@ -14,7 +14,7 @@ class ActionGraph
             public:
                 explicit Node(const Action& action);
 
-                const std::vector<const Node*> get_successors() const;
+                const std::vector<const Node*>& get_successors() const;
                 void add_successor(const Node* node);
 
             public:

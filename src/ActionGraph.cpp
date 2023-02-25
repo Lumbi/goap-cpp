@@ -68,10 +68,8 @@ std::vector<Action> ActionGraph::find_path(const Conditions& start_conditions, c
                 [] (const Node& node) { return node.get_successors(); },
                 [&] (const Node& node) { return goal.is_reachable_by(node.action); }
             );
-            if (shortest_path.empty()) {
-                shortest_path = path;
-            } else if (path.size() < shortest_path.size()) {
-                shortest_path = path;
+            if (shortest_path.empty() || path.size() < shortest_path.size()) {
+                shortest_path = std::move(path);
             }
         }
     }

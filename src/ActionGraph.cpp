@@ -3,6 +3,8 @@
 #include "Goal.h"
 #include "PathFinding.h"
 
+#include <algorithm>
+
 ActionGraph::Node::Node(const Action& action)
     : action { action },
       _successors { }
@@ -76,10 +78,11 @@ std::vector<Action> ActionGraph::find_path(const Conditions& start_conditions, c
 
     // Map nodes to actions
     std::vector<Action> actions;
-    for (auto&& node : shortest_path) {
-        actions.insert(actions.begin(), node->action);
-    }
-
+    std::transform(
+        shortest_path.rbegin(), shortest_path.rend(),
+        std::back_inserter(actions),
+        [](auto&& node){ return node->action; }
+    );
     return actions;
 }
 

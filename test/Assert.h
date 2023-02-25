@@ -5,9 +5,11 @@
 #ifndef ASSERT_H
 #define ASSERT_H
 
-inline void ASSERT(std::function<bool (void)> predicate, const std::string& message)
+template<typename Predicate>
+requires std::is_invocable_r_v<bool, Predicate>
+void ASSERT(Predicate predicate, const std::string& message)
 {
-    if (predicate() == false) {
+    if (!predicate()) {
         std::cout << message << std::endl;
         exit(1);
     }

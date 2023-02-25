@@ -92,6 +92,19 @@ void test__find_path__multiple_paths()
     ASSERT_EQUAL(path.at(0).get_name(), "first", "The 1st action should be correct");
 }
 
+void test__find_path__multiple_paths__last_is_shortest()
+{
+    Action first("first", {}, { Condition(1, true) });
+    Action second("second", { Condition(1, true) }, { Condition(1, true), Condition(3, false) });
+    Action third("third", {}, { Condition(3, false) });
+    ActionGraph graph({ first, second, third });
+    Goal goal({ Condition(3, false) });
+    auto path = graph.find_path({}, goal);
+
+    ASSERT_EQUAL(path.size(), 1, "The path should have 1 action");
+    ASSERT_EQUAL(path.at(0).get_name(), "third", "The 1st action should be correct");
+}
+
 int ActionGraph_test(int, char**)
 {
     test__empty_graph__has_no_nodes();
@@ -101,6 +114,7 @@ int ActionGraph_test(int, char**)
     test__find_path__no_path();
     test__find_path__single_path();
     test__find_path__multiple_paths();
+    test__find_path__multiple_paths__last_is_shortest();
 
     return 0;
 }

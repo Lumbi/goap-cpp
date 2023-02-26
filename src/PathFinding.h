@@ -1,34 +1,51 @@
 #include <vector>
 #include <unordered_map>
 #include <unordered_set>
-#include <functional>
 #include <algorithm>
 #include <limits>
 
 #ifndef PATH_FINDING_H
 #define PATH_FINDING_H
 
-template<typename Node, typename Key>
-std::vector<Node*> find_shortest_path(
-    Node& start,
-    std::function<Key (Node&)> get_key,
-    std::function<std::vector<Node*> (Node&)> get_neighbors,
-    std::function<bool (Node&)> is_goal
-)
+template<typename Query>
+concept PahtFindingQueryable =
+requires
 {
+    typename Query::Node;
+    typename Query::Key;
+}
+&&
+requires (Query query, typename Query::Node node)
+{
+    { query.get_start() } -> std::same_as<typename Query::Node*>;
+    { query.get_key(node) } -> std::convertible_to<typename Query::Key>;
+    { query.get_neighbors(node) } -> std::convertible_to<std::vector<typename Query::Node*>>;
+    { query.is_goal(node) } -> std::same_as<bool>;
+};
+
+template<typename Query>
+requires PahtFindingQueryable<Query>
+std::vector<typename Query::Node*> find_shortest_path(Query& query)
+{
+    using Key = typename Query::Key;
+    using Node = typename Query::Node;
+
+    Node* start = query.get_start();
+    if (!start) { return {}; }
+
     std::vector<Node*> to_visit;
     std::unordered_set<Key> visited;
     std::unordered_map<Key, float> distance;
     std::unordered_map<Key, Node*> previous;
 
-    to_visit.push_back(&start);
-    distance[get_key(start)] = 0;
+    to_visit.push_back(start);
+    distance[query.get_key(*start)] = 0;
 
     Node* last = nullptr;
 
     // Convenience distance accessor
     auto get_distance = [&](Node& node) -> float {
-        Key key = get_key(node);
+        Key key = query.get_key(node);
         return distance.contains(key)
             ? distance[key]
             : std::numeric_limits<float>::infinity();
@@ -47,13 +64,13 @@ std::vector<Node*> find_shortest_path(
         to_visit.erase(it_nearest);
 
         // Exit if we're at goal
-        if (is_goal(*nearest)) {
+        if (query.is_goal(*nearest)) {
             last = nearest;
             break;
         }
 
         // Skip if already visited
-        Key nearest_key = get_key(*nearest);
+        Key nearest_key = query.get_key(*nearest);
         if (visited.contains(nearest_key)) {
             continue;
         } else {
@@ -61,8 +78,8 @@ std::vector<Node*> find_shortest_path(
         }
 
         // Explore neighbors and calculate distances
-        for (auto&& neighbor : get_neighbors(*nearest)) {
-            Key neighbor_key = get_key(*neighbor);
+        for (auto&& neighbor : query.get_neighbors(*nearest)) {
+            Key neighbor_key = query.get_key(*neighbor);
             if (!visited.contains(neighbor_key)) {
                 to_visit.push_back(neighbor);
                 float new_distance = get_distance(*nearest) + 1.f; // default distance to 1 between nodes
@@ -80,7 +97,7 @@ std::vector<Node*> find_shortest_path(
     Node* current = last;
     while (current) {
         path.push_back(current);
-        Key key = get_key(*current);
+        Key key = query.get_key(*current);
         if (previous.contains(key)) {
             current = previous[key];
         } else {

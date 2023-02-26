@@ -8,7 +8,7 @@
 #define PATH_FINDING_H
 
 template<typename Query>
-concept PahtFindingQueryable =
+concept PathFindingQueryable =
 requires
 {
     typename Query::Node;
@@ -24,7 +24,7 @@ requires (Query query, typename Query::Node node)
 };
 
 template<typename Query>
-requires PahtFindingQueryable<Query>
+requires PathFindingQueryable<Query>
 std::vector<typename Query::Node*> find_shortest_path(Query& query)
 {
     using Key = typename Query::Key;

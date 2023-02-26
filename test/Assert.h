@@ -2,9 +2,14 @@
 #include <string>
 #include <functional>
 
-inline void ASSERT(std::function<bool (void)> predicate, const std::string& message)
+#ifndef ASSERT_H
+#define ASSERT_H
+
+template<typename Predicate>
+requires std::is_invocable_r_v<bool, Predicate>
+void ASSERT(Predicate predicate, const std::string& message)
 {
-    if (predicate() == false) {
+    if (!predicate()) {
         std::cout << message << std::endl;
         exit(1);
     }
@@ -36,3 +41,5 @@ void ASSERT_NOT_NULL(const T* t, const std::string& message)
         message + " : expected value to not be null"
     );
 }
+
+#endif

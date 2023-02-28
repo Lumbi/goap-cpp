@@ -21,6 +21,8 @@ add_library (
     PathFinding.h
     ActionGraph.cpp
     ActionGraph.h
+    Critter.cpp
+    Critter.h
 )
 
 target_link_libraries (

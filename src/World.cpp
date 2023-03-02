@@ -59,7 +59,7 @@ float World::distance(const sf::Vector2f& a,  const sf::Vector2f& b)
 
 int World::food_count_nearby(const sf::Vector2f& position)
 {
-    const float radius = 128.f;
+    const float radius = 164.f;
     int count = 0;
     for (auto&& entity : entities) {
         Food* food = dynamic_cast<Food*>(entity.get());

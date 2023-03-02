@@ -6,6 +6,8 @@
 #ifndef FOOD_H
 #define FOOD_H
 
+class World;
+
 class Food: public Entity
 {
     public:
@@ -17,13 +19,14 @@ class Food: public Entity
         sf::Sprite sprite;
 
     public:
-        void update(class World&, const sf::Time&) override {};
+        void update(World&, const sf::Time&) override {};
         void draw(sf::RenderTarget&) override;
 
         const sf::Vector2f& get_position() const;
         int get_z_index() override;
 
-        static void spawn_at_random(class World&);
+        static void spawn_at(World&, const sf::Vector2f&);
+        static void spawn_at_random(World&);
 };
 
 #endif

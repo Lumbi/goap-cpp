@@ -47,6 +47,13 @@ int main()
                 sf::FloatRect visible_area(0.f, 0.f, event.size.width, event.size.height);
                 window.setView(sf::View(visible_area));
             }
+
+            if (event.type == sf::Event::MouseButtonPressed)
+            {
+                sf::Vector2i mouse_position = sf::Mouse::getPosition(window);
+                sf::Vector2f world_position = window.mapPixelToCoords(mouse_position);
+                Food::spawn_at(world, { float(world_position.x), float(world_position.y) });
+            }
         }
 
         world.update(delta_time);

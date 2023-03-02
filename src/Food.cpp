@@ -32,13 +32,19 @@ int Food::get_z_index()
     return sprite.getPosition().y;
 }
 
+void Food::spawn_at(World& world, const sf::Vector2f& position)
+{
+    auto food = std::make_unique<Food>(position);
+    world.entities.push_back(std::move(food));
+}
+
 void Food::spawn_at_random(World& world)
 {
-    auto food = std::make_unique<Food>(
+    Food::spawn_at(
+        world,
         sf::Vector2f({
             float(world.bounds.left + (rand() % world.bounds.width)),
             float(world.bounds.top + (rand() % world.bounds.height)),
         })
     );
-    world.entities.push_back(std::move(food));
 }

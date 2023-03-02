@@ -24,17 +24,25 @@ Critter::Critter(const sf::Vector2f& position)
     }
 
     int frame_size = 32;
+    sprite.setTexture(spritesheet);
+    sprite.setOrigin(frame_size / 2, frame_size / 2);
+    sprite.setScale(2, 2);
+    sprite.setPosition(position);
+
     walk_animator.set_mode(SpriteAnimator::PlayMode::loop);
     walk_animator.set_fps(15.f);
     walk_animator.set_frame_count(spritesheet.getSize().x / frame_size);
     walk_animator.set_frame_size({ frame_size, frame_size });
 
-    sprite.setTexture(spritesheet);
-    sprite.setTextureRect(sf::IntRect(0, 0, frame_size, frame_size));
+    int sleep_frame_size = 16;
+    sleep_texture.loadFromFile("res/sleep.png");
+    sleep_sprite.setTexture(sleep_texture);
+    sleep_sprite.setOrigin(0, sleep_frame_size); // bottom-left
 
-    sprite.setOrigin(frame_size / 2, frame_size / 2);
-    sprite.setScale(2, 2);
-    sprite.setPosition(position);
+    sleep_animator.set_mode(SpriteAnimator::PlayMode::loop);
+    sleep_animator.set_fps(8.f);
+    sleep_animator.set_frame_count(sleep_texture.getSize().x / sleep_frame_size);
+    sleep_animator.set_frame_size({ sleep_frame_size, sleep_frame_size });
 }
 
 void Critter::update(World& world, const sf::Time& delta_time)
@@ -95,6 +103,7 @@ void Critter::update_eating(World& world, const sf::Time& delta_time)
 void Critter::draw(sf::RenderTarget& render)
 {
     render.draw(sprite);
+    state_machine.draw(*this, render);
 }
 
 // AI & State
@@ -139,6 +148,13 @@ void CritterState::update(Critter& critter, World& world, const sf::Time& delta_
     }
 }
 
+void CritterState::draw(Critter& critter, sf::RenderTarget& render)
+{
+    if (current) {
+        current->draw(critter, render);
+    }
+}
+
 void CritterState::SeekFood::update(Critter& critter, World& world, const sf::Time& delta_time)
 {
     random_move_time += delta_time.asSeconds();
@@ -161,7 +177,18 @@ void CritterState::SeekFood::update(Critter& critter, World& world, const sf::Ti
     critter.walk_animator.update(critter.sprite, delta_time);
 }
 
-void CritterState::Sleep::update(Critter& critter, World& world, const sf::Time& delta_time)
+void CritterState::SeekFood::draw(Critter&, sf::RenderTarget&)
 {
     // NOOP
+}
+
+void CritterState::Sleep::update(Critter& critter, World& world, const sf::Time& delta_time)
+{
+    critter.sleep_animator.update(critter.sleep_sprite, delta_time);
+    critter.sleep_sprite.setPosition(critter.sprite.getPosition() + sf::Vector2f(16, 0));
+}
+
+void CritterState::Sleep::draw(Critter& critter, sf::RenderTarget& render)
+{
+    render.draw(critter.sleep_sprite);
 }

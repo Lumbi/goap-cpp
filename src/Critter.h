@@ -40,6 +40,7 @@ class CritterState
                 virtual ~State() {};
 
                 virtual void update(Critter&, World&, const sf::Time&) = 0;
+                virtual void draw(Critter&, sf::RenderTarget&) = 0;
         };
 
         class SeekFood: public State
@@ -50,12 +51,14 @@ class CritterState
 
             public:
                 void update(Critter&, World&, const sf::Time&) override;
+                void draw(Critter&, sf::RenderTarget&) override;
         };
 
         class Sleep: public State
         {
             public:
                 void update(Critter&, World&, const sf::Time&) override;
+                void draw(Critter&, sf::RenderTarget&) override;
         };
 
     private:
@@ -63,6 +66,7 @@ class CritterState
 
     public:
         void update(Critter&, World&, const sf::Time&);
+        void draw(Critter&, sf::RenderTarget&);
 };
 
 class Critter: public Entity
@@ -102,9 +106,13 @@ class Critter: public Entity
         sf::Texture spritesheet;
         sf::Sprite sprite;
 
+        sf::Texture sleep_texture;
+        sf::Sprite sleep_sprite;
+
         // Animation
 
         SpriteAnimator walk_animator;
+        SpriteAnimator sleep_animator;
 
     public:
         void update(World&, const sf::Time&) override;

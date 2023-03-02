@@ -105,6 +105,31 @@ void test__find_path__multiple_paths__last_is_shortest()
     ASSERT_EQUAL(path.at(0).get_name(), "third", "The 1st action should be correct");
 }
 
+void test__find_path__critter_state()
+{
+    const Condition not_hungry(1, false);
+    const Condition food_nearby(2, true);
+    const Condition no_food_nearby = food_nearby.negated();
+    const Condition satiated(3, true);
+    const Condition powered_up(4, true);
+
+    const Action seek_food("seek_food", { food_nearby }, { not_hungry, satiated });
+    const Action sleep("sleep", { no_food_nearby }, { food_nearby });
+    const Action power_up("power_up", { not_hungry, satiated }, { powered_up });
+
+    ActionGraph graph({ seek_food, sleep, power_up });
+    Goal goal({ powered_up });
+
+    Conditions start_conditions({ not_hungry, no_food_nearby });
+
+    auto path = graph.find_path(start_conditions, goal);
+
+    ASSERT_EQUAL(path.size(), 3, "The path should have 3 actions");
+    ASSERT_EQUAL(path.at(0).get_name(), "sleep", "The 1st action should be 'sleep'");
+    ASSERT_EQUAL(path.at(1).get_name(), "seek_food", "The 2nd action should be 'seek_food'");
+    ASSERT_EQUAL(path.at(2).get_name(), "power_up", "The 3rd action should be 'power_up'");
+}
+
 int ActionGraph_test(int, char**)
 {
     test__empty_graph__has_no_nodes();
@@ -115,6 +140,7 @@ int ActionGraph_test(int, char**)
     test__find_path__single_path();
     test__find_path__multiple_paths();
     test__find_path__multiple_paths__last_is_shortest();
+    test__find_path__critter_state();
 
     return 0;
 }

@@ -3,6 +3,7 @@
 #include "Entity.h"
 #include "ActionGraph.h"
 #include "Action.h"
+#include "SpriteAnimator.h"
 
 #ifndef CRITTER_H
 #define CRITTER_H
@@ -103,11 +104,7 @@ class Critter: public Entity
 
         // Animation
 
-        float animation_frame_time = 0.f;
-        const float animation_frame_duration = 7.f / 60.f;
-        int animation_frame_index = 0;
-        int animation_frame_count;
-        int animation_frame_size = 32;
+        SpriteAnimator walk_animator;
 
     public:
         void update(World&, const sf::Time&) override;
@@ -122,7 +119,6 @@ class Critter: public Entity
         void update_hunger(World&, const sf::Time&);
         void update_eating(World&, const sf::Time&);
         void set_hunger(int);
-        void animate(const sf::Time& delta_time);
 };
 
 #endif

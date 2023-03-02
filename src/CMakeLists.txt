@@ -21,6 +21,8 @@ add_library (
     PathFinding.h
     ActionGraph.cpp
     ActionGraph.h
+    SpriteAnimator.cpp
+    SpriteAnimator.h
     Entity.h
     Critter.cpp
     Critter.h

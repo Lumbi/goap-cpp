@@ -23,14 +23,18 @@ Critter::Critter(const sf::Vector2f& position)
             break;
     }
 
-    sprite.setTexture(spritesheet);
-    sprite.setTextureRect(sf::IntRect(0, 0, animation_frame_size, animation_frame_size));
+    int frame_size = 32;
+    walk_animator.set_mode(SpriteAnimator::PlayMode::loop);
+    walk_animator.set_fps(15.f);
+    walk_animator.set_frame_count(spritesheet.getSize().x / frame_size);
+    walk_animator.set_frame_size({ frame_size, frame_size });
 
-    sprite.setOrigin(animation_frame_size / 2, animation_frame_size / 2);
+    sprite.setTexture(spritesheet);
+    sprite.setTextureRect(sf::IntRect(0, 0, frame_size, frame_size));
+
+    sprite.setOrigin(frame_size / 2, frame_size / 2);
     sprite.setScale(2, 2);
     sprite.setPosition(position);
-
-    animation_frame_count = spritesheet.getSize().x / animation_frame_size;
 }
 
 void Critter::update(World& world, const sf::Time& delta_time)
@@ -85,23 +89,6 @@ void Critter::update_eating(World& world, const sf::Time& delta_time)
             eat(*food);
             world.destroy(other.get());
         }
-    }
-}
-
-void Critter::animate(const sf::Time& delta_time)
-{
-    animation_frame_time += delta_time.asSeconds();
-
-    if (animation_frame_time >= animation_frame_duration) {
-        animation_frame_time = 0;
-        animation_frame_index = (animation_frame_index + 1) % animation_frame_count;
-
-        sprite.setTextureRect(
-            sf::IntRect(
-                animation_frame_index * animation_frame_size, 0,
-                animation_frame_size, animation_frame_size
-            )
-        );
     }
 }
 
@@ -171,7 +158,7 @@ void CritterState::SeekFood::update(Critter& critter, World& world, const sf::Ti
         case Critter::Direction::right: critter.sprite.move(delta, 0); break;
     }
 
-    critter.animate(delta_time);
+    critter.walk_animator.update(critter.sprite, delta_time);
 }
 
 void CritterState::Sleep::update(Critter& critter, World& world, const sf::Time& delta_time)

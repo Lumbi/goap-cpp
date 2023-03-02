@@ -33,3 +33,8 @@ Check out `ActionGraph.cpp` and `PathFinding.cpp`, that's where most of the juic
 Using [SFML](https://www.sfml-dev.org/index.php) for graphics, etc.
 
 NOTE: Very much NOT optimized code
+
+## Assets
+
+- https://frozentaurus.itch.io/food-assets
+- https://stealthix.itch.io/animated-slimes

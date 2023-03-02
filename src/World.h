@@ -17,7 +17,7 @@ class World {
 
     private:
         float food_spawn_time = 0.f;
-        float food_spawn_delay = 2.f;
+        float food_spawn_delay = 1.f;
         int destroyed_count = 0;
 
     public:

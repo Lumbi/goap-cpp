@@ -21,8 +21,13 @@ add_library (
     PathFinding.h
     ActionGraph.cpp
     ActionGraph.h
+    Entity.h
     Critter.cpp
     Critter.h
+    Food.cpp
+    Food.h
+    World.cpp
+    World.h
 )
 
 target_link_libraries (

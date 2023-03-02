@@ -21,6 +21,7 @@ class Food: public Entity
         void draw(sf::RenderTarget&);
 
         const sf::Vector2f& get_position() const;
+        int get_z_index() override;
 
         static void spawn_at_random(class World&);
 };

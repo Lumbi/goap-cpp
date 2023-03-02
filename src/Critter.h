@@ -148,6 +148,8 @@ class Critter: public Entity
         void draw(sf::RenderTarget&) override;
 
         const sf::Vector2f& get_position() const;
+        int get_z_index() override;
+
         int get_hunger() const;
 
         void eat(const class Food&);

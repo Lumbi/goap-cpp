@@ -58,6 +58,11 @@ const sf::Vector2f& Critter::get_position() const
     return sprite.getPosition();
 }
 
+int Critter::get_z_index()
+{
+    return sprite.getPosition().y;
+}
+
 void Critter::eat(const class Food& food)
 {
     set_hunger(hunger - 10);

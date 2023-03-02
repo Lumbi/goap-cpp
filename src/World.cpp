@@ -9,6 +9,18 @@
 
 void World::update(const sf::Time& delta_time)
 {
+    std::sort(
+        entities.begin(),
+        entities.end(),
+        [](auto&& a, auto&& b){
+            if (a != nullptr && b != nullptr) {
+                return a->get_z_index() < b->get_z_index();
+            } else {
+                return true;
+            }
+        }
+    );
+
     for (auto&& entity : entities) {
         if (entity) {
             entity->update(*this, delta_time);

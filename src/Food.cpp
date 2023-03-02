@@ -27,6 +27,11 @@ const sf::Vector2f& Food::get_position() const
     return sprite.getPosition();
 }
 
+int Food::get_z_index()
+{
+    return sprite.getPosition().y;
+}
+
 void Food::spawn_at_random(World& world)
 {
     auto food = std::make_unique<Food>(

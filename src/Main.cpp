@@ -1,6 +1,7 @@
 #include <iostream>
 #include <memory>
 #include <SFML/Graphics.hpp>
+#include <cmath>
 
 #include "Critter.h"
 #include "Food.h"
@@ -25,6 +26,7 @@ int main()
 
     sf::Event event;
     sf::Clock clock;
+    sf::Clock time;
     float target_frame_rate = 60.f;
     float target_time_per_frame = 1.f / target_frame_rate;
 
@@ -49,7 +51,12 @@ int main()
 
         world.update(delta_time);
 
-        window.clear();
+        float t = time.getElapsedTime().asSeconds();
+        window.clear(sf::Color(
+            16 + sinf(t) * sinf(t) * 32,
+            16 + sinf(t / 2.f) * sinf(t / 2.f) * 16,
+            16 + cosf(t) * cosf(t) * 32
+        ));
 
         world.draw(window);
 

@@ -17,8 +17,8 @@ class Food: public Entity
         sf::Sprite sprite;
 
     public:
-        void update(class World&, const sf::Time&) {};
-        void draw(sf::RenderTarget&);
+        void update(class World&, const sf::Time&) override {};
+        void draw(sf::RenderTarget&) override;
 
         const sf::Vector2f& get_position() const;
         int get_z_index() override;

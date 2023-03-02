@@ -15,6 +15,8 @@ class Condition
 
         bool operator== (const Condition& other) const;
 
+        Condition negated() const;
+
     private:
         ID _identifier;
         bool _is_true;

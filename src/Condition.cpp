@@ -10,6 +10,11 @@ bool Condition::operator== (const Condition& other) const
     return this->_identifier == other._identifier;
 }
 
+Condition Condition::negated() const
+{
+    return Condition(_identifier, !_is_true);
+}
+
 bool Condition::is_satisfied_by(const Condition& other) const
 {
     return this->_identifier == other._identifier

@@ -12,20 +12,20 @@ class Critter;
 class World;
 
 namespace AI {
-    static const Condition hungry(1 << 0, true);
+    static const Condition hungry(1, true);
     static const Condition not_hungry = hungry.negated();
 
-    static const Condition food_nearby(1 << 1, true);
+    static const Condition food_nearby(2, true);
     static const Condition no_food_nearby = food_nearby.negated();
 
-    static const Condition satiated(1 << 2, true);
+    static const Condition satiated(3, true);
 
-    static const Condition powered_up(1 << 2, true);
+    static const Condition powered_up(4, true);
 
     static const Action seek_food(
         "seek_food",
         { food_nearby },
-        { not_hungry }
+        { not_hungry, satiated }
     );
 
     static const Action sleep(

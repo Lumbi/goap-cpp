@@ -1,12 +1,13 @@
 #include "Critter.h"
 
 #include <SFML/Graphics.hpp>
+#include <cmath>
 
 #include "World.h"
 #include "Food.h"
 
 Critter::Critter(const sf::Vector2f& position)
-    : action_graph({ AI::seek_food, AI::sleep })
+    : action_graph({ AI::seek_food, AI::sleep, AI::power_up })
 {
     switch (rand() % 4) {
         case 1:
@@ -124,19 +125,23 @@ Conditions get_world_conditions(World& world, Critter& critter)
         conditions.push_back(AI::no_food_nearby);
     }
 
+    if (critter.get_hunger() == 0) {
+        conditions.push_back(AI::satiated);
+    }
+
     return conditions;
 }
 
 void CritterState::update(Critter& critter, World& world, const sf::Time& delta_time)
 {
-    if (!current) {
+    if (!current || critter.is_powered_up) {
         current = &critter.seek_food;
     }
 
     current->update(critter, world, delta_time);
 
     Conditions world_condition = get_world_conditions(world, critter);
-    auto path = critter.action_graph.find_path(world_condition, Goal({ AI::not_hungry }));
+    auto path = critter.action_graph.find_path(world_condition, Goal({ AI::powered_up }));
 
     if (!path.empty()) {
         Action& next_action = path.front();
@@ -144,6 +149,8 @@ void CritterState::update(Critter& critter, World& world, const sf::Time& delta_
             current = &critter.seek_food;
         } else if (next_action == AI::sleep) {
             current = &critter.sleep;
+        } else if (next_action == AI::power_up) {
+            current = &critter.power_up;
         }
     }
 }
@@ -191,4 +198,22 @@ void CritterState::Sleep::update(Critter& critter, World& world, const sf::Time&
 void CritterState::Sleep::draw(Critter& critter, sf::RenderTarget& render)
 {
     render.draw(critter.sleep_sprite);
+}
+
+void CritterState::PowerUp::update(Critter& critter, World&, const sf::Time& delta_time)
+{
+    if (animation_time < animation_duration) {
+        float scale = initial_scale + (initial_scale / 2.f) * sinf(animation_time * 7.f) + (animation_time / animation_duration) * target_scale;
+        critter.sprite.setScale(scale, scale);
+        animation_time += delta_time.asSeconds();
+    } else {
+        critter.is_powered_up = true;
+    }
+
+    critter.walk_animator.update(critter.sprite, delta_time);
+}
+
+void CritterState::PowerUp::draw(Critter&, sf::RenderTarget&)
+{
+    // NOOP
 }

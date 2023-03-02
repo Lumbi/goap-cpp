@@ -18,6 +18,10 @@ namespace AI {
     static const Condition food_nearby(1 << 1, true);
     static const Condition no_food_nearby = food_nearby.negated();
 
+    static const Condition satiated(1 << 2, true);
+
+    static const Condition powered_up(1 << 2, true);
+
     static const Action seek_food(
         "seek_food",
         { food_nearby },
@@ -28,6 +32,12 @@ namespace AI {
         "sleep",
         { no_food_nearby },
         { food_nearby }
+    );
+
+    static const Action power_up(
+        "power_up",
+        { not_hungry, satiated },
+        { powered_up }
     );
 };
 
@@ -61,6 +71,19 @@ class CritterState
                 void draw(Critter&, sf::RenderTarget&) override;
         };
 
+        class PowerUp: public State
+        {
+            private:
+                const float initial_scale = 2.f;
+                const float target_scale = 4.f;
+                float animation_time = 0.f;
+                float animation_duration = 3.f;
+
+            public:
+                void update(Critter&, World&, const sf::Time&) override;
+                void draw(Critter&, sf::RenderTarget&) override;
+        };
+
     private:
         State* current = nullptr;
 
@@ -74,6 +97,7 @@ class Critter: public Entity
     friend class CritterState;
     friend class CritterState::SeekFood;
     friend class CritterState::Sleep;
+    friend class CritterState::PowerUp;
 
     public:
         enum Direction { up, down, left, right };
@@ -87,6 +111,7 @@ class Critter: public Entity
         CritterState state_machine;
         CritterState::SeekFood seek_food;
         CritterState::Sleep sleep;
+        CritterState::PowerUp power_up;
         ActionGraph action_graph;
 
         // Movement
@@ -100,6 +125,10 @@ class Critter: public Entity
         static const int max_hunger = 100;
         float hunger_tick_time = 0.f;
         const float hunger_tick_duration = 3.f;
+
+        // Power
+
+        bool is_powered_up = false;
 
         // Graphics
 

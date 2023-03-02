@@ -28,7 +28,7 @@ int main()
     float target_frame_rate = 60.f;
     float target_time_per_frame = 1.f / target_frame_rate;
 
-    for (int i = 0; i < 50; i++) {
+    for (int i = 0; i < 100; i++) {
         Food::spawn_at_random(world);
     }
 
